@@ -8,12 +8,15 @@ import importlib.util
 class MedicalKeywordExtractor:
     def __init__(self):
         # Load English language model
-        self.nlp = spacy.load("en_core_web_sm")
-         # Check if the spaCy model is installed, if not, download it
-        if importlib.util.find_spec(model_name) is None:
+        model_name = "en_core_web_sm"
+        # Check if the spaCy model is installed, if not, download it
+        try:
+            spacy.load(model_name)
+        except OSError:
             subprocess.run(["python", "-m", "spacy", "download", model_name])
-        
+
         self.nlp = spacy.load(model_name)
+
 
         # Add medical terms to the vocabulary
         self.medical_terms = {
