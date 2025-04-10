@@ -1,19 +1,26 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-from summarizer import MedicalSummary
+from googletrans import Translator
 
-app = FastAPI()
-summarizer = MedicalSummary()
+class TextTranslator:
+    def __init__(self):
+        self.translator = Translator()
 
-class SummarizationRequest(BaseModel):
-    text: str
-    lang: str = 'en'
+    def detect_language(self, text):
+        try:
+            return self.translator.detect(text).lang
+        except Exception as e:
+            print(f"Language detection failed: {e}")
+            return 'en'
 
-@app.get("/")
-def root():
-    return {"message": "Care Companion Summarizer is running 🚀"}
+    def translate_to_english(self, text):
+        try:
+            return self.translator.translate(text, dest='en').text
+        except Exception as e:
+            print(f"Translation to English failed: {e}")
+            return text
 
-@app.post("/summarize")
-def summarize(request: SummarizationRequest):
-    result = summarizer.summarize_text(request.text, request.lang)
-    return {"summary": result}
+    def translate_from_english(self, text, target_lang):
+        try:
+            return self.translator.translate(text, dest=target_lang).text
+        except Exception as e:
+            print(f"Translation from English failed: {e}")
+            return text
