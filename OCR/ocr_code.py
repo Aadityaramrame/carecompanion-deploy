@@ -8,7 +8,6 @@ import re
 import json
 import glob
 import os
-
 # --- Enhanced Medical Regex Patterns ---
 MEDICAL_PATTERNS = {
     'patient': {
