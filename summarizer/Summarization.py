@@ -2,17 +2,16 @@ import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 from googletrans import Translator
 class MedicalSummary:
-    def __init__(self, model_path='/Users/aditi/Desktop/CareCompanion/fine_tuned_model'):
+    def __init__(self, model_path='Aadityaramrame/carecompanion-summarizer'):
         self.model_path = model_path
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.tokenizer = T5Tokenizer.from_pretrained('t5-base')
+        self.tokenizer = T5Tokenizer.from_pretrained(self.model_path)
         self.model = self.load_model()
 
     def load_model(self):
         model = T5ForConditionalGeneration.from_pretrained(self.model_path)
         model.to(self.device)
         model.eval()
-        print("Model loaded successfully!")
         return model
 
     def clean_text(self, text):
