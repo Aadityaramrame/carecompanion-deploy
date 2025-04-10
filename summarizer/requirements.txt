@@ -1,4 +1,5 @@
 torch
 transformers
+fastapi
+uvicorn
 googletrans==4.0.0-rc1
-sentencepiece  # required for T5 models sometimes
