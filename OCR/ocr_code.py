@@ -44,8 +44,9 @@ MEDICAL_PATTERNS = {
 class OCRProcessor:
     """Extracts text from an image using Tesseract OCR."""
     
-    def extract_text(self, img_path):
-        img = cv2.imread(img_path)
+    def extract_text(self,image_bytes):
+        nparr = np.frombuffer(image_bytes, np.uint8)
+        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
         if img is None:
             raise ValueError(f"Could not read image at {img_path}")
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -191,8 +192,8 @@ class MedicalOCRApp:
         self.process_images()
 
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     # Update the folder path as needed; for example, "images" if you have a local folder named images.
-    INPUT_FOLDER = "images"
-    app = MedicalOCRApp(INPUT_FOLDER)
-    app.run()
+    #INPUT_FOLDER = "images"
+    #app = MedicalOCRApp(INPUT_FOLDER)
+    #app.run()
