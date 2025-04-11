@@ -1,3 +1,5 @@
+import numpy as np
+import cv2
 from fastapi import FastAPI, File, UploadFile, HTTPException, Header
 import os
 from ocr_processor import OCRProcessor, MedicalDataExtractor  # your OG CODE modules
