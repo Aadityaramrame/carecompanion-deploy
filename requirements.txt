@@ -1,0 +1,15 @@
+flask
+spacy
+scikit-learn
+gunicorn
+opencv-python-headless
+pytesseract
+numpy
+transformers
+Pillow
+regex
+python-multipart
+fastapi
+transformers
+uvicorn
+googletrans==4.0.0-rc1
