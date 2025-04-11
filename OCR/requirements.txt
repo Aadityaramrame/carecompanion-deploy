@@ -8,3 +8,4 @@ transformers
 Pillow
 regex
 python-multipart
+gunicorn
