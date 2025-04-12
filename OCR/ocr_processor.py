@@ -3,7 +3,6 @@ import pytesseract
 import torch
 import numpy as np
 from PIL import Image
-from transformers import T5ForConditionalGeneration, T5Tokenizer
 import re
 import json
 import glob
@@ -44,7 +43,7 @@ MEDICAL_PATTERNS = {
 class OCRProcessor:
     """Extracts text from an image using Tesseract OCR."""
     
-    def extract_text(self, image: np.ndarray) -> str:
+    def extract_text_from_image(self, image: np.ndarray) -> str:
         if image is None:
             raise ValueError("No image data provided to OCRProcessor.extract_text")
         # Convert to grayscale
