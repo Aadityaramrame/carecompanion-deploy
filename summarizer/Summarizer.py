@@ -1,3 +1,4 @@
+import os
 import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 from googletrans import Translator
@@ -6,12 +7,17 @@ from translator_module import TextTranslator  # your own module
 class MedicalSummary:
     def __init__(self, model_path='Aadityaramrame/carecompanion-summarizer'):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.tokenizer = T5Tokenizer.from_pretrained(model_path)
-        self.model = self.load_model(model_path)
+
+        # Fetch the Hugging Face API Key from environment variables
+        API_KEY = os.getenv('API_KEY')  # This gets the API key set in the environment
+
+        # Use the API_KEY when loading the model
+        self.tokenizer = T5Tokenizer.from_pretrained(model_path, use_auth_token=API_KEY)
+        self.model = self.load_model(model_path, API_KEY)
         self.translator = TextTranslator()
 
-    def load_model(self, model_path):
-        model = T5ForConditionalGeneration.from_pretrained(model_path)
+    def load_model(self, model_path, API_KEY):
+        model = T5ForConditionalGeneration.from_pretrained(model_path, use_auth_token=API_KEY)
         model.to(self.device)
         model.eval()
         return model
