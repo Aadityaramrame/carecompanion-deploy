@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import List
 from OCR.ocr_processor import OCRProcessor  # Correct import of OCRProcessor class
 from summarizer.Summarizer import Summarizer
-from KeywordExtraction.MedicalKeywordExtractor import extract_medical_keywords
+from KeywordExtraction.MedicalKeywordExtractor import MedicalKeywordExtractor
 from summarizer.translator_module import translate_to_english
 from chatbot.chatbot_function import DataProcessor, Chatbot
 
@@ -61,8 +61,10 @@ async def summarize_text(req: SummaryRequest):
 
 @app.post("/keywords")
 async def extract_keywords(req: KeywordRequest):
-    keywords = extract_medical_keywords(req.text)
-    return {"keywords": keywords}
+    extractor = MedicalKeywordExtractor()
+    keywords = extractor.extract_keywords(req.text)
+    categorized = extractor.categorize_keywords(keywords)
+    return {"keywords": categorized}
 
 @app.post("/translate")
 async def translate(req: TranslateRequest):
