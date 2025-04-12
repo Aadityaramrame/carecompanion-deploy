@@ -40,8 +40,19 @@ class TranslateRequest(BaseModel):
 # Routes
 @app.post("/chat", response_model=ChatResponse)
 async def get_chat_response(req: ChatRequest):
-    matched_question, answer, source = chatbot.get_response(req.question)
-    return {"matched_question": matched_question, "answer": answer, "source": source}
+    try:
+        matched_question, answer, source = chatbot.get_response(req.question)
+        return ChatResponse(
+            matched_question=matched_question,
+            answer=answer,
+            source=source
+        )
+    except Exception as e:
+        return ChatResponse(
+            matched_question="ERROR",
+            answer=f"Something went wrong: {str(e)}",
+            source="System"
+        )
 
 @app.post("/ocr")
 async def process_ocr(file: UploadFile = File(...)):
