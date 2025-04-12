@@ -5,7 +5,7 @@ from OCR.ocr_processor import OCRProcessor  # Correct import of OCRProcessor cla
 from summarizer.Summarizer import Summarizer
 from KeywordExtraction.MedicalKeywordExtractor import MedicalKeywordExtractor
 from summarizer.translator_module import TextTranslator
-from chatbot.chatbot_function import DataProcessor, Chatbot
+from Chatbot.chatbot_function import DataProcessor, Chatbot
 
 app = FastAPI(
     title="CareCompanion API",
