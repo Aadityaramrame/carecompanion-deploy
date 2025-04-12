@@ -1,11 +1,11 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from pydantic import BaseModel
 from typing import List
-from chatbot_function import DataProcessor, Chatbot
 from OCR.ocr_processor import extract_text_from_image
 from summarizer.Summarizer import Summarizer
 from KeywordExtraction.MedicalKeywordExtractor import extract_medical_keywords
 from summarizer.translator_module import translate_to_english
+from chatbot.chatbot_function import DataProcessor, Chatbot
 
 app = FastAPI(
     title="CareCompanion API",
