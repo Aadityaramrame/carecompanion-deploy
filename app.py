@@ -4,7 +4,7 @@ from typing import List
 from OCR.ocr_processor import OCRProcessor  # Correct import of OCRProcessor class
 from summarizer.Summarizer import Summarizer
 from KeywordExtraction.MedicalKeywordExtractor import MedicalKeywordExtractor
-from summarizer.translator_module import translate_to_english
+from summarizer.translator_module import TextTranslator
 from chatbot.chatbot_function import DataProcessor, Chatbot
 
 app = FastAPI(
@@ -68,5 +68,6 @@ async def extract_keywords(req: KeywordRequest):
 
 @app.post("/translate")
 async def translate(req: TranslateRequest):
-    translated = translate_to_english(req.text, req.source_lang)
+    translator = TextTranslator()
+    translated = translator.translate_to_english(req.text)
     return {"translated_text": translated}
