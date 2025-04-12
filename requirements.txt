@@ -10,6 +10,6 @@ Pillow
 regex
 python-multipart
 fastapi
-transformers
 uvicorn
 googletrans==4.0.0-rc1
+pandas  # added pandas for handling CSVs
