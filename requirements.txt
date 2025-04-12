@@ -12,5 +12,4 @@ python-multipart
 fastapi
 uvicorn
 googletrans==4.0.0-rc1
-pandas  # added pandas for handling CSVs
-sklearn
+pandas
