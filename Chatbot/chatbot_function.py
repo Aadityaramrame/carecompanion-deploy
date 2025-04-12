@@ -8,8 +8,8 @@ from sklearn.model_selection import train_test_split
 class DataProcessor:
     def __init__(self, file_path=None):
         if not file_path:
-            # Resolve path relative to the chatbot_function.py file
-            file_path = os.path.join(os.path.dirname(__file__), "Chatbot/cleaned_medquad.csv")
+            # Resolve path relative to this file
+            file_path = os.path.join(os.path.dirname(__file__), "cleaned_medquad.csv")
         print(f"📂 Loading data from: {file_path}")
 
         self.df = pd.read_csv(file_path)
@@ -75,3 +75,6 @@ class Chatbot:
                 print(f"\n🤖 Chatbot (matched question): {best_question}")
                 print(f"💡 Answer: {response}")
                 print(f"📚 Source: {source}")
+
+# ✅ Print to confirm successful module load
+print("✅ chatbot_function.py loaded successfully")
