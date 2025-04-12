@@ -4,7 +4,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import os
 from sklearn.model_selection import train_test_split
 class DataProcessor:
-    def __init__(self, file_path="/Users/aditi/Desktop/CareCompanion/cleaned_medquad.csv"):
+    def __init__(self, file_path="chatbot/cleaned_medquad.csv"):
         self.df = pd.read_csv(file_path)
         self.clean_data()
         self.vectorizer = TfidfVectorizer()
