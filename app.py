@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from pydantic import BaseModel
 from typing import List
-from OCR.ocr_processor import extract_text_from_image
+from OCR.ocr_processor import OCRProcessor  # Correct import of OCRProcessor class
 from summarizer.Summarizer import Summarizer
 from KeywordExtraction.MedicalKeywordExtractor import extract_medical_keywords
 from summarizer.translator_module import translate_to_english
@@ -46,7 +46,12 @@ async def get_chat_response(req: ChatRequest):
 @app.post("/ocr")
 async def process_ocr(file: UploadFile = File(...)):
     image_bytes = await file.read()
-    extracted_text = extract_text_from_image(image_bytes)
+    
+    # Instantiate the OCRProcessor class
+    ocr_processor = OCRProcessor()
+    
+    # Pass image bytes to the OCR processor
+    extracted_text = ocr_processor.extract_text_from_image(image_bytes)
     return {"extracted_text": extracted_text}
 
 @app.post("/summarize")
