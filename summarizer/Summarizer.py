@@ -3,7 +3,7 @@ import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 from googletrans import Translator
 from summarizer.translator_module import TextTranslator
-class MedicalSummary:
+class Summarizer:
     def __init__(self, model_path='Aadityaramrame/carecompanion-summarizer'):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
