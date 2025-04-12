@@ -1,4 +1,0 @@
-flask
-spacy
-scikit-learn
-gunicorn
