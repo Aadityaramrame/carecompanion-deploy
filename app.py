@@ -14,9 +14,9 @@ app = FastAPI(
 )
 
 # Load components at startup
-data_processor = DataProcessor()
-chatbot = Chatbot(data_processor)
-summarizer = Summarizer()
+#data_processor = DataProcessor()
+#chatbot = Chatbot(data_processor)
+#summarizer = Summarizer()
 
 # Request/Response models
 class ChatRequest(BaseModel):
