@@ -1,22 +1,17 @@
 import os
 import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
-from googletrans import Translator
 from summarizer.translator_module import TextTranslator
+
 class Summarizer:
-    def __init__(self, model_path='Aadityaramrame/carecompanion-summarizer'):
+    def __init__(self, model_path='t5-small'):  # 🔄 Changed to t5-small
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-        # Fetch the Hugging Face API Key from environment variables
-        API_KEY = os.getenv('API_KEY')  # This gets the API key set in the environment
-
-        # Use the API_KEY when loading the model
-        self.tokenizer = T5Tokenizer.from_pretrained(model_path, use_auth_token=API_KEY)
-        self.model = self.load_model(model_path, API_KEY)
+        self.tokenizer = T5Tokenizer.from_pretrained(model_path)
+        self.model = self.load_model(model_path)
         self.translator = TextTranslator()
 
-    def load_model(self, model_path, API_KEY):
-        model = T5ForConditionalGeneration.from_pretrained(model_path, use_auth_token=API_KEY)
+    def load_model(self, model_path):
+        model = T5ForConditionalGeneration.from_pretrained(model_path)
         model.to(self.device)
         model.eval()
         return model
@@ -53,10 +48,10 @@ class Summarizer:
                 input_ids,
                 max_length=max_length,
                 min_length=min_length,
-                num_beams=8,
-                no_repeat_ngram_size=3,
-                repetition_penalty=2.5,
-                length_penalty=2.0,
+                num_beams=4,  # 🔄 Slightly reduced for memory efficiency
+                no_repeat_ngram_size=2,
+                repetition_penalty=2.0,
+                length_penalty=1.5,
                 early_stopping=True
             )
 
