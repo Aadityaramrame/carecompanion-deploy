@@ -4,14 +4,22 @@ from transformers import T5Tokenizer, T5ForConditionalGeneration
 from summarizer.translator_module import TextTranslator
 
 class Summarizer:
-    def __init__(self, model_path='t5-small'):  # 🔄 Changed to t5-small
+    def __init__(self, model_path='t5-small'):  # Using t5-small
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.tokenizer = T5Tokenizer.from_pretrained(model_path)
-        self.model = self.load_model(model_path)
+
+        API_KEY = os.getenv('API_KEY')  # Optional if using a private HF model
+
+        self.tokenizer = T5Tokenizer.from_pretrained(model_path, use_auth_token=API_KEY)
+        self.model = self.load_model(model_path, API_KEY)
         self.translator = TextTranslator()
 
-    def load_model(self, model_path):
-        model = T5ForConditionalGeneration.from_pretrained(model_path)
+    def load_model(self, model_path, API_KEY):
+        model = T5ForConditionalGeneration.from_pretrained(
+            model_path,
+            use_auth_token=API_KEY,
+            torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+            low_cpu_mem_usage=True
+        )
         model.to(self.device)
         model.eval()
         return model
@@ -30,7 +38,7 @@ class Summarizer:
             summary += " Treatment includes antibiotics and supportive care."
         return summary
 
-    def summarize_text(self, text, target_lang='en', max_length=500, min_length=100):
+    def summarize_text(self, text, target_lang='en', max_length=200, min_length=30):
         try:
             detected_lang = self.translator.detect_language(text)
             print(f"Detected language: {detected_lang}")
@@ -39,21 +47,22 @@ class Summarizer:
                 text = self.translator.translate_to_english(text)
 
             cleaned_text = self.clean_text(text)
-            print(f"Cleaned input: {cleaned_text[:100]}...")
+            print(f"Cleaned input: {cleaned_text[:100]}...")  # Only printing snippet
 
             prompt = f'summarize the clinical case with diagnosis, comorbidities, and treatment plan: {cleaned_text}'
             input_ids = self.tokenizer.encode(prompt, return_tensors='pt').to(self.device)
 
-            summary_ids = self.model.generate(
-                input_ids,
-                max_length=max_length,
-                min_length=min_length,
-                num_beams=4,  # 🔄 Slightly reduced for memory efficiency
-                no_repeat_ngram_size=2,
-                repetition_penalty=2.0,
-                length_penalty=1.5,
-                early_stopping=True
-            )
+            with torch.no_grad():
+                summary_ids = self.model.generate(
+                    input_ids,
+                    max_length=max_length,
+                    min_length=min_length,
+                    num_beams=4,
+                    no_repeat_ngram_size=2,
+                    repetition_penalty=2.0,
+                    length_penalty=1.5,
+                    early_stopping=True
+                )
 
             raw_summary = self.tokenizer.decode(summary_ids[0], skip_special_tokens=True)
             formatted_summary = self.format_summary(raw_summary)
