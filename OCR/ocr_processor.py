@@ -44,14 +44,20 @@ MEDICAL_PATTERNS = {
 class OCRProcessor:
     """Extracts text from an image using Tesseract OCR."""
     
-    def extract_text_from_image(self, image: np.ndarray) -> str:
-        if image is None:
-            raise ValueError("No image data provided to OCRProcessor.extract_text")
-        # Convert to grayscale
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        # (optional) you can add thresholding or blurring here if needed
-        text = pytesseract.image_to_string(gray)
-        return text
+    def extract_text_from_image(self, image_bytes: bytes) -> str:  # Change input type hint
+    try:
+        # Convert bytes to numpy array
+        nparr = np.frombuffer(image_bytes, np.uint8)
+        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)  # Read image from bytes
+        
+        if img is None:
+            raise ValueError("Failed to decode image")
+            
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # Now works with proper numpy array
+        return pytesseract.image_to_string(gray)
+    
+    except Exception as e:
+        raise ValueError(f"Image processing failed: {str(e)}")
 
 
 class MedicalDataExtractor:
