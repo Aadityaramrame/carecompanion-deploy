@@ -5,9 +5,9 @@ services:
     region: oregon
     plan: free
     buildCommand: |
-      sudo apt-get update
-      sudo apt-get install -y tesseract-ocr libtesseract-dev
-      python -m pip install --upgrade pip
+      apt-get update
+      apt-get install -y tesseract-ocr libtesseract-dev tesseract-ocr-eng  # ← Removed sudo
+      pip install --upgrade pip
       pip install -e .
       python -m spacy download en_core_web_sm
     startCommand: uvicorn app:app --host=0.0.0.0 --port=$PORT
