@@ -7,6 +7,7 @@ import re
 import json
 import glob
 import os
+pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 # --- Enhanced Medical Regex Patterns ---
 MEDICAL_PATTERNS = {
     'patient': {
