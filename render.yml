@@ -10,5 +10,6 @@ services:
       python -m pip install --upgrade pip
       pip install -e .
       python -m spacy download en_core_web_sm
-    startCommand: uvicorn app:app --host=0.0.0.0 --port=10000
+    startCommand: |
+      gunicorn -k uvicorn.workers.UvicornWorker -w 2 main:app --bind 0.0.0.0:$PORT
     autoDeploy: true
