@@ -1,3 +1,4 @@
+from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List
 from OCR.ocr_processor import OCRProcessor  # Correct import of OCRProcessor class
