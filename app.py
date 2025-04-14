@@ -1,4 +1,3 @@
-from fastapi import FastAPI, UploadFile, File, Form
 from pydantic import BaseModel
 from typing import List
 from OCR.ocr_processor import OCRProcessor  # Correct import of OCRProcessor class
