@@ -5,9 +5,10 @@ services:
     region: oregon
     plan: free
     buildCommand: |
-      sudo apt-get update && sudo apt-get install -y tesseract-ocr
-      pip install -r requirements.txt
-    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+      sudo apt-get update
+      sudo apt-get install -y tesseract-ocr libtesseract-dev
+      python -m pip install --upgrade pip
+      pip install -e .
+      python -m spacy download en_core_web_sm
+    startCommand: gunicorn -k uvicorn.workers.UvicornWorker -w 2 -t 120 main:app --bind 0.0.0.0:$PORT
     autoDeploy: true
-    runtime: python3.11
-    healthCheckPath: /docs
